@@ -90,7 +90,7 @@ void ParticleFilter::setMeasurementModelLikelihoodField(
 	// scan, instead of multiplying the probabilities, because: log(a*b) = log(a)+log(b).
 
 	// TODO: here comes your code
-
+	//gaussian aufrufen und mean = 0 , x = distance aus distMap
 	double denom = 2 * sigmaHit * sigmaHit;
 	for (int x = 0; x < this->likelihoodFieldWidth; x++) {
 	        for (int y = 0; y < this->likelihoodFieldHeight; y++) {
