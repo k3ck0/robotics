@@ -101,10 +101,10 @@ void ParticleFilter::setMeasurementModelLikelihoodField(
             double distance = this->distMap[index];
 
             // precompute and store log-values
-            if (distance != 32000.0) { // 32000.0 bedeutet maximale Distanz (ungültige Zelle)
+            if (distance != 32000.0) { // check if cell is valid
                 this->likelihoodField[index] = - (distance * distance) / denom;
             } else {
-                // Setze Wahrscheinlichkeit für ungültige Zellen sehr niedrig
+                // set to -inf if cell is invalid
                 this->likelihoodField[index] = -std::numeric_limits<double>::infinity();
             }
         }
