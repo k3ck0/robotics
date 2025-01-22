@@ -93,22 +93,23 @@ void ParticleFilter::setMeasurementModelLikelihoodField(
 
 	double denom = 2 * sigmaHit * sigmaHit;
 	for (int x = 0; x < this->likelihoodFieldWidth; x++) {
-        for (int y = 0; y < this->likelihoodFieldHeight; y++) {
-
-            int index = x + y * this->likelihoodFieldWidth;
-
-            // get distance from distMap || ParticleFilter::computeMapIndex() exists
-            double distance = this->distMap[index];
-
-            // precompute and store log-values
-            if (distance != 32000.0) { // check if cell is valid
-                this->likelihoodField[index] = - (distance * distance) / denom;
-            } else {
-                // set to -inf if cell is invalid
-                this->likelihoodField[index] = -std::numeric_limits<double>::infinity();
-            }
-        }
-	ROS_INFO("...DONE creating likelihood field!");
+	        for (int y = 0; y < this->likelihoodFieldHeight; y++) {
+	
+	            int index = x + y * this->likelihoodFieldWidth;
+	
+	            // get distance from distMap || ParticleFilter::computeMapIndex() exists
+	            double distance = this->distMap[index];
+	
+	            // precompute and store log-values
+	            if (distance != 32000.0) { // check if cell is valid
+	                this->likelihoodField[index] = - (distance * distance) / denom;
+	            } else {
+	                // set to -inf if cell is invalid
+	                this->likelihoodField[index] = -std::numeric_limits<double>::infinity();
+	            }
+	        }
+		ROS_INFO("...DONE creating likelihood field!");
+	}
 }
 
 void ParticleFilter::calculateDistanceMap(const nav_msgs::OccupancyGrid& map) {
