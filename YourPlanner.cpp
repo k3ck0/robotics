@@ -49,6 +49,25 @@ YourPlanner::extend(Tree& tree, const Neighbor& nearest, const ::rl::math::Vecto
 }
 
 
+void
+YourPlanner::excludeDescendants(Tree& tree, Vertex node, std::set<Vertex>& exclude_list, int generations)
+{
+  if (generations <= 0)
+  {
+    return;
+  }
+
+  std::pair<Tree::adjacency_iterator, Tree::adjacency_iterator> children = boost::adjacent_vertices(node, tree);
+  for (Tree::adjacency_iterator it = children.first; it != children.second; ++it)
+  {
+    if (exclude_list.insert(*it).second) // only recurse if the node was newly inserted
+    {
+      excludeDescendants(tree, *it, exclude_list, generations - 1);
+    }
+  }
+}
+
+
 RrtConConBase::Neighbor
 YourPlanner::nearest(const Tree& tree, const ::rl::math::Vector& chosen)
 {
@@ -79,12 +98,13 @@ YourPlanner::nearest(const Tree& tree, const ::rl::math::Vector& chosen)
     // Überprüfen Sie, ob der Knoten zu weit entfernt ist
     if (d - this->delta > p.second)
     {
+      excludeDescendants(tree, *i.first, exclude_list, this->delta);
       // Fügen Sie den Knoten und seine Kinder zur exclude_list hinzu
-      std::pair<Tree::adjacency_iterator, Tree::adjacency_iterator> children = boost::adjacent_vertices(*i.first, tree);
-      for (Tree::adjacency_iterator it = children.first; it != children.second; ++it)
-      {
-        exclude_list.insert(*it);
-      }
+      //std::pair<Tree::adjacency_iterator, Tree::adjacency_iterator> children = boost::adjacent_vertices(*i.first, tree);
+      //for (Tree::adjacency_iterator it = children.first; it != children.second; ++it)
+      
+      //  exclude_list.insert(*it);
+      
     }
   }
 
