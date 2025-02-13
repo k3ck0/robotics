@@ -36,6 +36,7 @@ protected:
   
   RrtConConBase::Neighbor nearest(const Tree& tree, const ::rl::math::Vector& chosen);
 
+  void excludeDescendants(const Tree& tree, Vertex node, std::set<Vertex>& exclude_list, int generations);
 };
 
 #endif // _YOUR_PLANNER_H_
